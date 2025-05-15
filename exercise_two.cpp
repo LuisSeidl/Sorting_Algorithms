@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
-
+#include <cstdlib>
+#include <chrono>
 
 // merge function
 void merge(std::vector<int>& a, int first, int last, int mid) {
@@ -34,8 +35,7 @@ void mergeSort(std::vector<int>& a, int first, int last) {
         mergeSort(a, first, mid - 1);
         mergeSort(a, mid, last);
         merge(a, first, last, mid);
-        for (int x : a) std::cout << x << " ";
-        std::cout << "\n";
+
     }
 }
 
@@ -64,28 +64,60 @@ void quickSort(std::vector<int>& a, int first, int last) {
         int part = preparePartition(a, first, last);
         quickSort(a, first, part - 1);
         quickSort(a, part + 1, last);
-        for (int x : a) std::cout << x << " ";
-        std::cout << "\n";
     }
 }
 
-int main() {
-    std::vector<int> testArray = {-5, 13, -32, 7, -3, 17, 23, 12, -35, 19};
 
-    // Make copies to sort independently
-    std::vector<int> mergeSorted = testArray;
-    std::vector<int> quickSorted = testArray;
-
-    mergeSort(mergeSorted, 0, mergeSorted.size() - 1);
-    std::cout << "\nMerge Sorted: ";
-    for (int x : mergeSorted) std::cout << x << " ";
-    std::cout << "\n \n";
-
-
-    quickSort(quickSorted, 0, quickSorted.size() - 1);
-    std::cout << "\nQuick Sorted: ";
-    for (int x : quickSorted) std::cout << x << " ";
-    std::cout << "\n";
-
-    return 0;
+void bubbleSort(std::vector<int>& arr) {
+    size_t n = arr.size();
+    for (size_t i = 0; i < n - 1; ++i) {
+        for (size_t j = 0; j < n - i - 1; ++j) {
+            if (arr[j] > arr[j + 1]) {
+                std::swap(arr[j], arr[j + 1]);
+            }
+        }
+    }
 }
+
+
+
+
+
+
+
+
+
+int main() {
+
+    using std::chrono::high_resolution_clock;
+    using std::chrono::duration_cast;
+    using std::chrono::duration;
+    using std::chrono::milliseconds;
+
+    std::vector<int> array;
+    
+    for(int arraySize = 100; arraySize < 1000000; arraySize+=100){
+
+        array.resize(arraySize);
+
+        for (int elementAt = 0; elementAt < arraySize; ++elementAt){
+            array[elementAt] = rand();
+        }
+
+        auto Start = high_resolution_clock::now();
+
+        mergeSort(array, 0, array.size() - 1);
+
+        auto End = high_resolution_clock::now();
+
+        auto Duration = duration_cast<milliseconds>(End-Start);
+
+        if (Duration.count() > 60000){
+            std::cout << "Merge Sort managed to Sort " << arraySize << " Elements";
+            return 0;
+        }
+    }
+}
+
+
+
