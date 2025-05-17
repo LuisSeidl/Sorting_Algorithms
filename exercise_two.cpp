@@ -96,16 +96,23 @@ int main() {
     std::mt19937 rng(std::random_device{}());
     std::uniform_int_distribution<int> dist(0, 1'000'000);
 
+
     std::vector<int> array;
-    bool mergeSort_active = true;
-    bool bubbleSort_active = true;
+    bool mergeSort_active = false;
+    bool bubbleSort_active = false;
     bool quickSort_active = true;
 
-    for (int arraySize = 100; arraySize < 1'000'000; arraySize += 100) {
+    auto program_start = high_resolution_clock::now();
+    auto last_log = program_start;
+
+    for (int arraySize = 50'000'000; arraySize < 1'000'000'000'000; arraySize += 2'000'000) {
         array.resize(arraySize);
         for (int& val : array) {
             val = dist(rng);
         }
+        std::cout << "Generated random values for " << arraySize << " elements\n";
+
+
 
         // Only copy if needed
         std::vector<int> mergeArray, bubbleArray, quickArray;
@@ -147,9 +154,21 @@ int main() {
             }
         }
 
+        auto now = high_resolution_clock::now();
+        auto since_last_log = duration_cast<seconds>(now - last_log);
+        if (since_last_log.count() >= 30) {
+            auto total_runtime = duration_cast<seconds>(now - program_start);
+            std::cout << "[INFO] Program running for " << total_runtime.count() << " seconds...\n";
+            last_log = now;
+        }
+
         // Exit if all algorithms are done
         if (!mergeSort_active && !bubbleSort_active && !quickSort_active) break;
     }
 
     return 0;
 }
+
+ //Bubble Sort: 100.000 Elements
+ //Quick Sort: 54.000.000 Elements
+ //Merge Sort: 76.000.000 Elements
