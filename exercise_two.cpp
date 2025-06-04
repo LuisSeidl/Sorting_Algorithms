@@ -110,7 +110,7 @@ int main() {
         for (int& val : array) {
             val = dist(rng);
         }
-        std::cout << "Generated random values for " << arraySize << " elements\n";
+        //std::cout << "Generated random values for " << arraySize << " elements\n";
 
 
 
@@ -152,14 +152,6 @@ int main() {
                 std::cout << "Quick Sort managed to sort " << arraySize << " elements\n";
                 quickSort_active = false;
             }
-        }
-
-        auto now = high_resolution_clock::now();
-        auto since_last_log = duration_cast<seconds>(now - last_log);
-        if (since_last_log.count() >= 30) {
-            auto total_runtime = duration_cast<seconds>(now - program_start);
-            std::cout << "[INFO] Program running for " << total_runtime.count() << " seconds...\n";
-            last_log = now;
         }
 
         // Exit if all algorithms are done
