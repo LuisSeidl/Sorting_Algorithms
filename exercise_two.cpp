@@ -5,9 +5,6 @@
 #include <random>
 
 
-
-
-
 // Merge Sort
 void merge(std::vector<int>& a, int first, int last, int mid) {
     int n = last - first + 1;
